@@ -99,7 +99,7 @@ CCNPPEK0001_01_rest01_DU15_network_ts.mat
 `select_ccnppek_participant.R`（和`select_ccnpckg_participant_fsaverage5.R`）筛选出meanfd小于0.3的被试数据，并对同一个session内的所有通过qc的run取平均
 /Volumes/Zuolab_XRF/output/ccnp/sfc/sfc_nbtw_embedding/pek_step01_fd0.3_sessionAvg.xlsx
 
-### 分subtype × step计算ABIDE的SFEI均值
+### ？？？分subtype × step计算ABIDE的SFEI均值
 `mean_SFC_nbtw_by_subtype_step_ABIDE.m`
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/meanzSFC
 zSFC_mean_TD_step01.csv
