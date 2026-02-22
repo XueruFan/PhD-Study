@@ -127,119 +127,42 @@ zSFC_mean_ASD_H_step08.csv
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/difference/zSFEI_abide_network_step.csv
 
 ### SFEI与认知行为的相关分析
-`statistic_SFC_correlations_abide.R`
-本脚本用于分析ABIDE数据集中不同分组/分型的SFEI与认知行为量表之间的相关关系。在控制站点效应的前提下，分别对嵌入值与行为指标进行残差相关分析，整体分析流程与此前基于脑形态学百分位数的相关分析保持方法学一致性
-
-本脚本依赖以下数据文件：
-1. **SFC embedding 结果（多步）**  `/Volumes/Zuolab_XRF/output/abide/sfc/sfc_embedding/`
-   该目录包含 step01–step08 共 8 个 Excel 文件，每个文件对应一步 SFC 嵌入结果。行表示被试，列表示不同功能网络（Net01–Net15）的 embedding 值。
-
-2. **最终纳入分析的被试列表**  `/Volumes/Zuolab_XRF/output/abide/sfc/sfc_participant_for_analysis.csv` 
-   本研究中最终用于 SFC 分析的男性被试编号，用于在不同数据源之间进行统一筛选与对齐。
-
-3. **ASD 亚型预测结果（仅男性）**   `/Volumes/Zuolab_XRF/output/abide/abide_cluster_predictions_male.csv`  
-
-4. **认知与临床行为数据**     `/Users/xuerufan/DCM-Project-PhD-Study3-/supplement/abide_A_all_240315.csv`  
-   包含 FIQ、ADOS、ADI-R 以及 SRS 等认知与临床行为量表数据，同时包含站点信息（SITE_ID）。
-
-### 分析方法概述
-- 自变量  
-  不同嵌入步骤（step01–step08）中，各功能网络对应的 SFC embedding 值。
-- 因变量  
-  认知与临床行为指标，包括 FIQ、ADOS、ADI-R 及 SRS 各分量表。其中 ADOS_2_RRB 作为非正态分布变量单独处理。
-- 统计方法  
-  对 ADOS_2_RRB 使用 Spearman 相关，对其余连续行为指标使用 Pearson 相关。在相关分析前，分别对自变量与因变量回归掉站点效应（SITE_ID），并基于残差计算相关系数。每一对变量要求有效样本量不少于 30。所有相关结果在每个嵌入步骤及亚型内进行 FDR 多重比较校正。
-
-### 输出结果说明
-
-所有分析结果统一输出至以下目录：`/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/`
-
-生成的主要结果文件为：
-
-1. **SFC embedding × 认知行为相关结果汇总表（按亚型）**  
-   文件名：  
-   `/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/SFEI_nbwt_cognition_LH.csv`
-   内容说明：  
-   该表格汇总了所有嵌入步骤（step01–step08）、所有功能网络以及所有认知与临床行为指标在 ASD-L 与 ASD-H 亚型中的相关分析结果。表格包含以下字段：  
-   - step：嵌入步骤  
-   - cluster：亚型（L / H）  
-   - name_brain：功能网络  
-   - name_cog：认知或行为指标  
-   - coef：相关系数  
-   - p_value：原始 p 值  
-   - P_adj：FDR 校正后的 p 值  
-   - df：残差模型自由度
-   - 
-### 显著相关结果的网络重命名与层级整理
-在完成 SFC embedding 与认知行为的相关分析后，本脚本进一步对结果数据进行后处理，以便直接用于论文结果展示与可视化分析。
-具体而言，首先将分析结果中以 Net01–Net15 表示的功能网络，映射为对应的功能系统名称缩写（如 VIS-P、DN-A、FPN-B 等），网络定义基于既定的功能网络分区方案。随后，仅保统计显著的结果（P < 0.05）。
-
-在整理后的结果表中，所有显著结果按照以下层级顺序进行排列：  
-1）嵌入步骤（step01–step08），  
-2）功能网络（按系统名称排序），  
-3）ASD 亚型（ASD-L，ASD-H）。
-
-后处理步骤生成的最终显著结果文件为：`/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/SFEI_nbwt_cognition_LH_significant.csv`
-
-该文件包含以下信息：  
-- step：SFC 嵌入步骤  
-- cluster：ASD 亚型（L / H）  
-- network_abbr：功能网络名称缩写  
-- name_cog：认知或临床行为指标  
-- coef：相关系数  
-- p_value：原始 p 值  
-- P_adj：FDR 校正后的 p 值  
-- df：残差模型自由度  
-
-该结果表为论文结果部分和补充材料中网络层级与嵌入步骤层级分析的核心输入，可直接用于生成分亚型的相关模式图或热图展示。
-
-### SFC embedding × 认知行为的个体层面可视化（自动生成散点图）
-
-在完成 SFC embedding 与认知行为指标的相关分析后，本脚本基于统计显著结果，自动生成对应的个体层面散点图，用于直观展示功能连接嵌入与行为指标之间的关系模式。该流程严格以相关分析结果为输入，仅对达到统计显著的组合进行作图，避免人工筛选带来的主观偏差，确保结果展示的系统性与可复现性。
-
-对于每一个达到显著性的分析结果，脚本自动遍历以下维度组合：
-- SFC 嵌入步骤（step01–step08）
-- 功能网络（Net01–Net15）
-- 认知或临床行为指标（如 FIQ、SRS、ADOS 等）
-
-针对每一个 *step × network × behavior* 组合，生成一张独立的散点图，具体作图策略如下：
-- 每个散点代表一名被试
-- 横轴为对应功能网络的 SFC embedding 值（残差）
-- 纵轴为对应认知或行为指标（残差）
-- 在作图前对所有变量统一控制扫描站点效应（SITE_ID）
-- 使用线性回归趋势线（lm）展示组内关系
-- 同时展示三组被试：
-  - TD（灰色）
-  - ASD-L（绿色）
-  - ASD-H（红色）
-该可视化方式与前述相关分析在数据清洗、协变量控制及统计模型上保持一致，确保图像展示与统计检验具有严格的方法学对应关系。
-所有图像文件统一保存至以下目录：/Volumes/Zuolab_XRF/output/abide/sfc/plot/corr
+`statistic_zSFC_correlations_abide.R`
+/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr
 
 
 ## SFEI的个体偏离分析
 
 ### 汇总数据
-`sum_SFEI_for_normative.R` 汇总CCNP中meanfd小于0.3，ccnp和abide中的td 筛选年龄不超过18的男性，数据整合起来用于建模
-/Volumes/Zuolab_XRF/output/normative/SFEI_normative_demographic.xlsx
+`sum_zSFEI_for_combat.R` 汇总CCNP中meanfd小于0.3，ccnp和abide中的td 筛选年龄不超过18的男性，数据整合起来用于建模
+/Volumes/Zuolab_XRF/output/normative/zSFEI_normative_data.xlsx
+/Volumes/Zuolab_XRF/output/normative/zSFEI_normative_demo.xlsx
 
 ### combat去除站点效应
-`combat_SFEI_for_combat.R` ABIDE（ASD、TD）和CCNP一起combat
-/Volumes/Zuolab_XRF/output/normative/SFEI_normative_data_combat.xlsx
+`combat_zSFEI_for_normative.R` ABIDE（ASD、TD）和CCNP一起combat
+/Volumes/Zuolab_XRF/output/normative/zSFEI_normative_data_combat.xlsx
 
 ### 建立SFEI的常模
 `statistic_FD_correlations_ccnp.R`分析fd和SFEI是否相关，结果是不相关
-/Volumes/Zuolab_XRF/output/normative/SFEI_fd_correlation.xlsx
+/Volumes/Zuolab_XRF/output/normative/zSFEI_fd_correlation.xlsx
 
-`gamlss_SFEI_ccnp.R` 用CCNP和ABIDE中的TD一起建模GAMLSS
+`gamlss_zSFEI_ccnp.R` 用CCNP和ABIDE中的TD一起建模GAMLSS
+/Volumes/Zuolab_XRF/output/normative/gamlss
 
-`centile_ASD_SFEI.R`计算 ASD的centile
+### 计算偏离
+`centile_ASD_zSFEI.R`计算ASD的centile
+/Volumes/Zuolab_XRF/output/normative/centile/ASD_centile_results.xlsx
+`centile_plot_ASD_zSFEI.R`
+/Volumes/Zuolab_XRF/output/normative/centile/plots
 
 ### 分析ASD整体及亚型的z偏离与网络组织模式
-`z_analysis_SFEI_network_ABIDE.R`
+`analysis_zSFEI_network_ABIDE.R`
+/Volumes/Zuolab_XRF/output/normative/centile/network_stat
 
 ### centile和认知行为的相关
-`statistic_SFC_centile_correlations_abide.R`
-
+`statistic_zSFEI_centile_correlations_abide.R`
+/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/z_score_correlation_LH.csv
+/Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/z_score_correlation_LH_significant.csv
 
 
 # 研究四 rDCM分析
