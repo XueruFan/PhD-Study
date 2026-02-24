@@ -130,7 +130,6 @@ zSFC_mean_ASD_H_step08.csv
 `statistic_zSFC_correlations_abide.R`
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/corr
 
-
 ## SFEI的个体偏离分析
 
 ### 汇总数据
@@ -165,42 +164,27 @@ zSFC_mean_ASD_H_step08.csv
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/corr/z_score_correlation_LH_significant.csv
 
 
-# 研究四 rDCM分析
 
-## Step : rDCM 批处理
+# PhD Study4: DCM分析
 
-基于 **TAPAS toolbox**的有效连接估计，所有脚本均采用 **classic rDCM（无 sparsity 约束）** 和 **有sparsity 约束**两种方式，并显式指定采样间隔（TR）。
-
-
-### 1️⃣ `calculate_rDCM_ABIDE.m`
-
-- 每个被试一个时间序列文件，根据 `siteName` 自动匹配 TR
-
-
-### 2️⃣ `calculate_rDCM_CCNP.m`
-
-- 每个被试可包含多个 run（如 rest1 / rest2），CKG：2.5 s  ，PEK：2.0 s
-
-### 输出结构示例
-
-rDCM/
-├── ABIDE/
-│   └── sub-XXXX_rDCM.mat
-├── CKG/
-│   └── sub-XXXX_ses01/
-│       └── sub-XXXX_rest1_rDCM.mat
-└── PEK/
-    └── sub-XXXX_ses01/
-        └── sub-XXXX_rest1_rDCM.mat
-
-## Step : 汇总rDCM结果
-`sum_rDCM_ABIDE.m`
-`sum_rDCM_CCNP.m`
-CCNP_rDCM_summary.xlsx
-ABIDE_rDCM_summary.xlsx
-
+### 计算与汇总rDCM
+`calculate_rDCM_ABIDE.m`和`calculate_rDCM_CCNP.m`（calculate_rDCM_CCNP_fsaverage5.m），srDCM和rDCM
+`sum_rDCM_ABIDE.m`和`sum_rDCM_CCNP.m`
+/Volumes/Zuolab_XRF/output/abide/dcm/sum/ABIDE_rDCM_summary.xlsx
 `sum_srDCM_ABIDE.m`
-ABIDE_rDCM_summary.xlsx
+/Volumes/Zuolab_XRF/output/abide/dcm/sum/ABIDE_srDCM_summary.xlsx
+
+### 对abide的srDCM结果进行鲁棒pca分析，同时验证了Net14
+`analysis_srDCM_pca_ABIDE.R`
+/Volumes/Zuolab_XRF/output/abide/dcm/des/ABIDE_male_RobustPCA_full_results.xlsx
+/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_PC1_axis.png
+/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_PC1_loadings_heatmap_named.png
+/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_space.png
+
+/Volumes/Zuolab_XRF/output/abide/dcm/des/Node14_validation_results.xlsx
+/Volumes/Zuolab_XRF/output/abide/dcm/plot/PC1_vs_Node14_in_strength.png
+
+
 
 
 ## Step : rDCM组水平分析
