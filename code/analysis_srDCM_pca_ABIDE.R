@@ -608,6 +608,11 @@ all_cor_results_pc2 <- mapply(
 
 all_cor_results_pc2_df <- do.call(rbind, all_cor_results_pc2)
 
+lm_pc2 <- lm(PC2 ~ Subtype + Age + site, data = scores_rpca)
+
+summary_lm_pc2 <- broom::tidy(lm_pc2)
+anova_lm_pc2 <- broom::tidy(anova(lm_pc2))
+
 ############################################################
 # 6. 保存 PC2 汇总文件
 ############################################################
@@ -622,6 +627,13 @@ writeData(wb_auto_pc2,"Key_Networks_PC2",key_nodes_pc2)
 
 addWorksheet(wb_auto_pc2,"All_Correlations_PC2")
 writeData(wb_auto_pc2,"All_Correlations_PC2",all_cor_results_pc2_df)
+
+addWorksheet(wb_auto_pc2,"LM_Summary_PC2")
+writeData(wb_auto_pc2,"LM_Summary_PC2",summary_lm_pc2)
+
+addWorksheet(wb_auto_pc2,"ANOVA_PC2")
+writeData(wb_auto_pc2,"ANOVA_PC2",anova_lm_pc2)
+
 
 saveWorkbook(
   wb_auto_pc2,

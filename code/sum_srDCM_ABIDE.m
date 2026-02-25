@@ -48,7 +48,7 @@ T = addvars(T, subject, 'Before', 1);
 writetable(T, out_xlsx);
 fprintf('rDCM Done!');
 
-%% %%%%%%%%%%%% sum rDCM %%%%%%%%%%%%%%%%%%%
+%% %%%%%%%%%%%% sum srDCM %%%%%%%%%%%%%%%%%%%
 rdcm_root  = fullfile(abide_root, 'srDCM');
 
 out_xlsx = fullfile(stat_root, 'ABIDE_srDCM_summary.xlsx');
