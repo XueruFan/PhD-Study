@@ -127,7 +127,7 @@ zSFC_mean_ASD_H_step08.csv
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/difference/zSFEI_abide_network_step.csv
 
 ### SFEI与认知行为的相关分析
-`statistic_zSFC_correlations_abide.R`
+`statistic_zSFEI_correlations_abide.R`
 /Volumes/Zuolab_XRF/output/abide/sfc/stat/corr
 
 ## SFEI的个体偏离分析
