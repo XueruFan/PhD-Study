@@ -28,14 +28,14 @@ demo <- read_xlsx(demo_file) %>%
   dplyr::select(Participant, Session, Sex, Age) %>%
   distinct(Participant, Session, .keep_all = TRUE)
 
-  srdcm <- read_xlsx(file.path(dcm_dir, "CCNP_srDCM_summary.xlsx"))
+rdcm <- read_xlsx(file.path(dcm_dir, "CCNP_rdcm_summary.xlsx"))
   
   # 1. 严格 run-level QC
-  srdcm_sel <- srdcm %>%
+  rdcm_sel <- rdcm %>%
     semi_join(qc, by = c("Participant", "Session", "Run"))
   
   # 2. 对同一个 Participant × Session 内的 run 取平均
-  srdcm_avg <- srdcm_sel %>%
+  rdcm_avg <- rdcm_sel %>%
     group_by(Participant, Session) %>%
     summarise(
       across(starts_with("EC"), ~ mean(.x, na.rm = TRUE)),
@@ -43,12 +43,12 @@ demo <- read_xlsx(demo_file) %>%
     )
   
   # 3. 合并人口学信息（session-level）
-  merged <- srdcm_avg %>%
+  merged <- rdcm_avg %>%
     left_join(demo, by = c("Participant", "Session")) %>%
     dplyr::select(Participant, Sex, Age, Session, starts_with("EC"))
   
   # 4. 输出
   write_xlsx(
     merged,
-    file.path(dcm_dir, paste0("pek_srdcm_fd0.3_sessionAvg.xlsx"))
+    file.path(dcm_dir, paste0("pek_rdcm_fd0.3_sessionAvg.xlsx"))
   )

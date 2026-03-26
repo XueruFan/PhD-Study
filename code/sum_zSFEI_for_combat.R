@@ -165,12 +165,13 @@ library(openxlsx)
 
 # 观测层级：每一行代表一个观测
 obs_level <- normative_data %>%
-  select(ID, Cohort, Site, Age) %>%
+  filter(Step == 1) %>%
+  select(ID, Cohort, Site, Age, Subtype) %>%
   distinct()  # 防止 Step × Network 重复
 
 # ---- 按 Cohort ----
 obs_cohort <- obs_level %>%
-  group_by(Cohort) %>%
+  group_by(Cohort, Subtype) %>%
   summarise(
     N_obs = n(),
     Age_mean = mean(Age, na.rm = TRUE),
@@ -180,7 +181,7 @@ obs_cohort <- obs_level %>%
 
 # ---- 按 Cohort × Site ----
 obs_site <- obs_level %>%
-  group_by(Cohort, Site) %>%
+  group_by(Cohort, Subtype, Site) %>%
   summarise(
     N_obs = n(),
     Age_mean = mean(Age, na.rm = TRUE),
@@ -189,44 +190,12 @@ obs_site <- obs_level %>%
   ) %>%
   arrange(Cohort, Site)
 
-############################################################
-# 2. Subject-level summary
-############################################################
-
-# 每个受试者只算一次（纵向取平均年龄）
-subj_level <- normative_data %>%
-  group_by(ID, Cohort, Site) %>%
-  summarise(
-    Age = mean(Age, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-# ---- 按 Cohort ----
-subj_cohort <- subj_level %>%
-  group_by(Cohort) %>%
-  summarise(
-    N_subject = n(),
-    Age_mean = mean(Age, na.rm = TRUE),
-    Age_sd   = sd(Age, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-# ---- 按 Cohort × Site ----
-subj_site <- subj_level %>%
-  group_by(Cohort, Site) %>%
-  summarise(
-    N_subject = n(),
-    Age_mean = mean(Age, na.rm = TRUE),
-    Age_sd   = sd(Age, na.rm = TRUE),
-    .groups = "drop"
-  ) %>%
-  arrange(Cohort, Site)
 
 ############################################################
 # 3. Save to Excel (multiple sheets)
 ############################################################
 
-demo_output_file <- "/Volumes/Zuolab_XRF/output/normative/zSFEI_normative_demo.xlsx"
+demo_output_file <- "/Volumes/Zuolab_XRF/output/norm_zSFEI/zSFEI_normative_demo.xlsx"
 
 wb <- createWorkbook()
 
@@ -236,13 +205,15 @@ writeData(wb, "Cohort", obs_cohort)
 addWorksheet(wb, "Site")
 writeData(wb, "Site", obs_site)
 
-addWorksheet(wb, "Subject_Cohort")
-writeData(wb, "Subject_Cohort", subj_cohort)
-
-addWorksheet(wb, "Subject_Site")
-writeData(wb, "Subject_Site", subj_site)
-
 saveWorkbook(wb, demo_output_file, overwrite = TRUE)
 
 cat("Demographic summary saved to:\n", demo_output_file)
 
+#########保存一份ccnp用于建常模的人口信息
+
+ccnppek <- normative_data %>%
+  filter(Step == 1, Cohort == "CCNP") %>%
+  select(ID, Age, Session, Subtype) %>%
+  distinct()  # 防止 Step × Network 重复
+
+write.csv(ccnppek, "/Volumes/Zuolab_XRF/output/ccnp/CCNPPEK_Participant.csv")

@@ -11,8 +11,8 @@ library(readxl)
 # 路径
 ############################################################
 
-data_path <- "/Volumes/Zuolab_XRF/output/normative/centile/ASD_centile_results.xlsx"
-plot_dir  <- "/Volumes/Zuolab_XRF/output/normative/centile/plots"
+data_path <- "/Volumes/Zuolab_XRF/output/norm_zSFEI/centile/ASD_centile_results.xlsx"
+plot_dir  <- "/Volumes/Zuolab_XRF/output/norm_zSFEI/centile/plots"
 
 dir.create(plot_dir, showWarnings = FALSE)
 
@@ -97,22 +97,23 @@ p_network <- ggplot(
   labs(
     x = "功能网络",
     y = "zSFEI的百分位位置",
-    fill = "组别/亚型"
+    fill = "亚型"
   ) +
-  theme_classic(base_size = 22) +
+  theme_classic(base_size = 20) +
   theme(
-    axis.text.x = element_text(angle = 45, hjust = 1, size = 26),
-    axis.text.y = element_text(size = 28),
-    axis.title  = element_text(size = 32),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.title  = element_text(size = 12),
+    # axis.title  = element_blank(),
     legend.position = "top",
-    legend.title = element_text(size = 30),
-    legend.text  = element_text(size = 28)
+    legend.title = element_text(size = 10),
+    legend.text  = element_text(size = 12)
   )
 
 p_network
 
 ggsave(
-  filename = file.path(plot_dir, "Centile_network_overall.png"),
+  filename = file.path(plot_dir, "研究三_两个ASD亚型的SFEI百分位位置分布.png"),
   plot     = p_network,
   width    = 3200,
   height   = 2000,

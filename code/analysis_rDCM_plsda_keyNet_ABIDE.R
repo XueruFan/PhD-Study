@@ -12,7 +12,7 @@ library(stringr)
 # 2️⃣ 读取 PCA 文件
 ############################################################
 
-file_path <- "/Volumes/Zuolab_XRF/output/abide/dcm/des/rDCM/All/RobustPCA_AllComponents.xlsx"
+file_path <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/PLSDA_statistics.xlsx"
 
 loadings_rpca <- read_excel(file_path, sheet = "Loadings")
 
@@ -137,9 +137,11 @@ analyze_network_direction <- function(network_name,
 # 5️⃣ 使用示例
 ############################################################
 
-res <- analyze_network_direction("dATN-B", "PC1", "in")
-# res <- analyze_network_direction("dATN-B", "PC1", "out")
-res <- analyze_network_direction("FPN-B", "PC2", "in")
-res <- analyze_network_direction("SMOT-B", "PC3", "in")
-# res <- analyze_network_direction("DN-A", "PC5", "in")
-# res <- analyze_network_direction("FPN-A", "PC1", "in")
+res <- analyze_network_direction("VIS-C", "Comp1", "out")
+res <- analyze_network_direction("dATN-A", "Comp1", "in")
+res <- analyze_network_direction("FPN-A", "Comp1", "in")
+res <- analyze_network_direction("AUD", "Comp2", "out")
+res <- analyze_network_direction("SAL", "Comp2", "in")
+res <- analyze_network_direction("FPN-B", "Comp3", "in")
+res <- analyze_network_direction("SMOT-A", "Comp3", "out")
+res <- analyze_network_direction("DN-A", "Comp3", "out")

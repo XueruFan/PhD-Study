@@ -281,7 +281,7 @@ p <- ggplot(
     high     = "#e47159",
     midpoint = 0,
     limits   = c(-0.4, 0.4),
-    name = expression(Delta~SFEI)
+    name = expression(Delta~zSFEI)
   ) +
   labs(x = "SFC步数", y = "功能网络") +
   theme_bw(base_size = 22) +
@@ -296,7 +296,7 @@ p <- ggplot(
   )
 
 ggsave(
-  filename = file.path(plot_dir, "zSFEI_abide_network_step_difference.png"),
+  filename = file.path(plot_dir, "三组人各功能网络在不同SFC连接步数下的zSFEI差异.png"),
   plot     = p,
   width    = 4000,
   height   = 2200,

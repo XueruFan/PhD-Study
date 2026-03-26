@@ -13,9 +13,9 @@ library(openxlsx)
 # 路径
 ############################################################
 
-corr_file   <- "/Volumes/Zuolab_XRF/output/abide/dcm/stat/corr/rDCM/All/EC_cognition_correlation.csv"
-select_file <- "/Volumes/Zuolab_XRF/output/abide/dcm/stat/corr/rDCM/All/PCA_KeyEdge_k3.xlsx"
-out_file    <- "/Volumes/Zuolab_XRF/output/abide/dcm/stat/corr/rDCM/All/PCA_KeyEdge_corr_k3.xlsx"
+corr_file   <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/corr/EC_cognition_correlation.csv"
+select_file <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/PLSDA_KeyEdge.xlsx"
+out_file    <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/corr/PLSDA_KeyEdge_corr.xlsx"
 
 ############################################################
 # 读取数据

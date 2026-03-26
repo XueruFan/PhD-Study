@@ -18,10 +18,17 @@ set.seed(1205)
 # 路径
 ############################################################
 
-ecFile     <- "/Volumes/Zuolab_XRF/output/abide/dcm/des/rDCM/All/RobustPCA_AllComponents.xlsx"
+ecFile     <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/PLSDA_statistics.xlsx"
 phenoFile  <- "/Volumes/Zuolab_XRF/supplement/abide/abide_A_all_240315.csv"
 
-outDir <- "/Volumes/Zuolab_XRF/output/abide/dcm/stat/corr/rDCM/All"
+outDir <- "/Volumes/Zuolab_XRF/output/rDCM_PLSDA/corr"
+
+###
+site <- read_excel("/Volumes/Zuolab_XRF/output/norm_rDCM/rDCM_normative_data.xlsx") %>%
+  dplyr::select(ID, Site) %>%
+  mutate(Site = recode(Site, "NYU2" = "NYU"))
+         
+colnames(site) <- c("participant", "site")
 
 ############################################################
 # 读取 EC 数据
@@ -29,17 +36,19 @@ outDir <- "/Volumes/Zuolab_XRF/output/abide/dcm/stat/corr/rDCM/All"
 
 scores <- read_excel(ecFile, sheet = "Scores")
 
-# 这里我们重新读取原始 rDCM summary（含 EC）
-dcm_raw <- read_excel("/Volumes/Zuolab_XRF/output/abide/dcm/sum/ABIDE_rDCM_summary.xlsx")
+dcm_z <- read_excel("/Volumes/Zuolab_XRF/output/norm_rDCM/gamlss/rDCM_deviation_zscores.xlsx")
 
-dcm_raw$participant <- as.character(as.numeric(dcm_raw$subject))
+dcm_z$participant <- as.character(as.numeric(dcm_z$subject))
 scores$participant  <- as.character(scores$subject)
 
 # 合并 subtype / site 信息
-dcm_all <- scores %>%
-  dplyr::select(participant, Subtype, site) %>% 
+dcm_all <- scores %>% 
   left_join(
-    dcm_raw, by = "participant"
+    site, by = "participant"
+  ) %>%
+  dplyr::select(participant, site) %>% 
+  left_join(
+    dcm_z, by = "participant"
   )
 
 ############################################################
@@ -106,7 +115,7 @@ for (cl in c("ASD-L", "ASD-H")) {
       
       temp <- dat_sub[, c(edge, cog, "Site")]
       temp <- temp[complete.cases(temp), ]
-      if (nrow(temp) < 40) next
+      if (nrow(temp) < 30) next
       
       if (length(unique(temp$Site)) > 1) {
         y_lm <- lm(temp[[cog]] ~ Site, data = temp)
@@ -142,7 +151,7 @@ for (cl in c("ASD-L", "ASD-H")) {
       
       temp <- dat_sub[, c(edge, cog, "Site")]
       temp <- temp[complete.cases(temp), ]
-      if (nrow(temp) < 40) next
+      if (nrow(temp) < 30) next
       
       if (length(unique(temp$Site)) > 1) {
         y_lm <- lm(temp[[cog]] ~ Site, data = temp)
@@ -178,10 +187,10 @@ for (cl in c("ASD-L", "ASD-H")) {
 
 final_results <- bind_rows(all_results)
 
-# final_results <- final_results %>%
-#   group_by(cluster) %>%
-#   mutate(P_adj_cluster = p.adjust(p_value, method = "fdr")) %>%
-#   ungroup()
+final_results <- final_results %>%
+  group_by(cluster) %>%
+  mutate(P_adj_cluster = p.adjust(p_value, method = "fdr")) %>%
+  ungroup()
 
 
 
