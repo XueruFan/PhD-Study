@@ -1,4 +1,4 @@
-# PhD Study - SFEIF分析
+# PhD Study - SFEI分析
 
 ## 数据准备
 
@@ -165,7 +165,7 @@ zSFC_mean_ASD_H_step08.csv
 
 
 
-# PhD Study4: DCM分析
+# PhD Study - rDCM分析
 
 ## 计算与汇总rDCM
 
@@ -211,56 +211,13 @@ zSFC_mean_ASD_H_step08.csv
 ### 分析主成分构成的关键边
 `analysis_rDCM_plsda_keyNet_ABIDE.R`
 
-
-#### 下面两个就不要了
 ### 分析EC和认知行为的相关
 `statistic_rDCM_ECcorrelations_ABIDE.R`
 
 ### 筛选出来关键边的相关
 `pickup_KeyNetwork_corr.R`
 
-
-
-
-
-### 对abide的srDCM结果进行鲁棒pca分析
-`analysis_srDCM_pca_ABIDE.R`
-/Volumes/Zuolab_XRF/output/abide/dcm/des/ABIDE_RobustPCA_Correlations.xlsx
-/Volumes/Zuolab_XRF/output/abide/dcm/des/ABIDE_RobustPCA_Difference.xlsx
-
-/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_PC1_axis.png
-/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_PC1_loadings_heatmap_named.png
-/Volumes/Zuolab_XRF/output/abide/dcm/plot/RobustPCA_space.png
-
-/Volumes/Zuolab_XRF/output/abide/dcm/des/Node14_validation_results.xlsx
-/Volumes/Zuolab_XRF/output/abide/dcm/plot/PC1_vs_Node14_in_strength.png
-
-### 对CCNP（18岁以下男性）的srDCM结果进行鲁棒pca分析
-`analysis_srDCM_pca_CCNP.R`
-/Volumes/Zuolab_XRF/output/ccnp/dcm/des/CCNP_RobustPCA_mechanism_full_summary.xlsx
-/Volumes/Zuolab_XRF/output/ccnp/dcm/plot
-
-### ccnp发育常模
-`gamlss_srDCM_ccnp.R`
-`gamlss_srDCM_SALPMN_ccnp.R`
-
-
-
-
-
-
-## Step : rDCM组水平分析
-`group_analysis_rDCM_ABIDE.R`
-/Volumes/Zuolab_XRF/data/abide/stats/ABIDE_rDCM_group_effects.csv
-/Volumes/Zuolab_XRF/data/abide/stats/ABIDE_rDCM_group_effects_male_under13.csv
-
-`group_analysis_srDCM_ABIDE.R`
-/Volumes/Zuolab_XRF/data/abide/stats/ABIDE_srDCM_density.csv
-/Volumes/Zuolab_XRF/data/abide/stats/ABIDE_srDCM_density_male_under13.csv
-
-## Step : 可视化组水平分析结果
-`gplot_roup_analysis_rDCM_ABIDE.R`
-/Volumes/Zuolab_XRF/data/abide/figures/ABIDE_rDCM_group_effects.png
-
-`group_analysis_srDCM_ABIDE.R`
-/Volumes/Zuolab_XRF/data/abide/figures/ABIDE_srDCM_logistic.png
+## 统计与可视化
+把abide和ccnppek中18岁以下的rDCM原始EC、EC的偏离汇总起来，进行描述性统计和绘图
+/Volumes/Zuolab_XRF/output/abide/dcm/stat/ABIDE3组人原始EC的显著差异边.xlsx
+/Volumes/Zuolab_XRF/output/abide/dcm/plot
